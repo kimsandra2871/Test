@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Protect – Divenci</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:       #4f46e5;
+      --brand-light: #6366f1;
+      --brand-pale:  #eef2ff;
+      --success:     #059669;
+      --text:        #111827;
+      --muted:       #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #f9fafb;
+      --white:       #ffffff;
+      --radius:      12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 80px 24px 72px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: 6px 18px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: #a5b4fc; }
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.82);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ─── SECTIONS ─────────────────────────────────────────── */
+    .section { padding: 72px 24px; }
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3.5vw, 34px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* ─── COMPARISON TABLE ──────────────────────────────────── */
+    .compare-wrap { overflow-x: auto; }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      min-width: 600px;
+    }
+    .compare-table thead tr {
+      background: var(--brand-pale);
+    }
+    .compare-table th {
+      padding: 16px 20px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table th:not(:first-child) { text-align: center; }
+    .compare-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .compare-table td:not(:first-child) { text-align: center; }
+    .compare-table tbody tr:nth-child(odd) { background: var(--white); }
+    .compare-table tbody tr:nth-child(even) { background: #f8f9ff; }
+    .compare-table tbody tr:hover { background: var(--brand-pale); }
+
+    .col-blockchain { color: var(--brand); font-weight: 700; }
+    .col-trad { color: var(--muted); }
+
+    .badge-yes {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: var(--success);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .badge-no {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fef2f2;
+      color: #dc2626;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .badge-warn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fffbeb;
+      color: #d97706;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .col-head-blockchain {
+      background: linear-gradient(135deg, #4338ca, #6366f1);
+      color: var(--white) !important;
+      border-radius: 8px 8px 0 0;
+    }
+
+    /* ─── BENEFITS GRID ─────────────────────────────────────── */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .benefit-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .benefit-card:hover {
+      box-shadow: 0 8px 30px rgba(79,70,229,.12);
+      transform: translateY(-2px);
+    }
+    .benefit-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .benefit-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .benefit-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── PRICING ───────────────────────────────────────────── */
+    .pricing-section { background: var(--white); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .plan-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      background: var(--white);
+      position: relative;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .plan-card:hover {
+      border-color: var(--brand);
+      box-shadow: 0 8px 30px rgba(79,70,229,.12);
+    }
+    .plan-card.featured {
+      border-color: var(--brand);
+      background: linear-gradient(160deg, #f5f3ff 0%, #ffffff 100%);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 4px 18px;
+      border-radius: 999px;
+    }
+    .plan-name {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--brand);
+      margin-bottom: 8px;
+    }
+    .plan-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .plan-price {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .plan-price .currency { font-size: 24px; font-weight: 700; line-height: 1.4; color: var(--brand); }
+    .plan-price .amount  { font-size: 52px; font-weight: 800; line-height: 1; color: var(--text); }
+    .plan-price-note {
+      font-size: 13px;
+      color: var(--success);
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+    .plan-storage {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--brand-pale);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .plan-storage-icon { font-size: 20px; }
+    .plan-storage strong { font-size: 15px; color: var(--brand); }
+    .plan-storage span { font-size: 13px; color: var(--muted); display: block; }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-features li:last-child { border-bottom: none; }
+    .plan-features .check { color: var(--success); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity .2s, transform .2s;
+      border: none;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-primary { background: var(--brand); color: var(--white); }
+    .btn-outline { background: transparent; color: var(--brand); border: 2px solid var(--brand); }
+
+    /* ─── HOW IT WORKS ──────────────────────────────────────── */
+    .how-section { background: var(--brand-pale); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      counter-reset: step;
+    }
+    .step {
+      text-align: center;
+      counter-increment: step;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: var(--white);
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step p  { font-size: 14px; color: var(--muted); }
+
+    /* ─── LEGAL NOTE ────────────────────────────────────────── */
+    .legal-note {
+      background: #f0fdf4;
+      border-left: 4px solid var(--success);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 48px;
+      font-size: 14px;
+      color: #065f46;
+      line-height: 1.7;
+    }
+    .legal-note strong { display: block; font-size: 15px; margin-bottom: 6px; }
+
+    /* ─── FAQ ───────────────────────────────────────────────── */
+    .faq-list { display: grid; gap: 16px; }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .faq-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .faq-item p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── FOOTER NOTE ───────────────────────────────────────── */
+    .footer-note {
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .footer-note a { color: var(--brand); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .plan-price .amount { font-size: 40px; }
+      .section { padding: 48px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-badge">🔐 IP Protect by Divenci</div>
+  <h1>Protect Your Creative Work<br><span>on the Blockchain — Forever</span></h1>
+  <p>Register your intellectual property with an immutable, globally recognised blockchain timestamp.
+     No renewal fees. No territorial limits. One payment. Lifetime proof of ownership.</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — WHY BLOCKCHAIN
+════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">Why Blockchain Registration?</div>
+    <h2 class="section-title">A smarter way to protect your IP</h2>
+    <p class="section-sub">
+      Traditional IP registries were designed for a paper world.
+      Blockchain was built for the digital age — borderless, tamper-proof, and permanent.
+    </p>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">🌍</div>
+        <h3>No Territorial Limits</h3>
+        <p>A blockchain record is visible and valid worldwide by default.
+           Traditional registrations (INPI, DPMA, UKIPO…) only cover the country or region
+           where you filed — you'd need separate applications to get global coverage.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">♾️</div>
+        <h3>Lifetime Validity — No Renewal</h3>
+        <p>Once written on the blockchain, your registration exists permanently.
+           Traditional registrations typically expire after 10 years and require
+           renewal fees every decade to remain active.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">⚡</div>
+        <h3>Instant &amp; Affordable</h3>
+        <p>Your registration is confirmed in minutes, for a fraction of the cost.
+           Filing with national offices involves application fees, examination periods
+           that can take months or years, and often the cost of a legal representative.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🔒</div>
+        <h3>Tamper-Proof by Design</h3>
+        <p>Blockchain records cannot be altered, deleted, or forged after creation.
+           Your timestamp is immutable proof of when you owned your work —
+           something no paper certificate can guarantee at the same level.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">⚖️</div>
+        <h3>Legally Recognised Timestamp</h3>
+        <p>Governments and courts in the EU and beyond increasingly recognise
+           blockchain-timestamped evidence. The EU eIDAS Regulation (2014/910/EU)
+           acknowledges the legal effect of electronic timestamps,
+           and many jurisdictions accept blockchain proof as a date of creation.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">📁</div>
+        <h3>Register One or Many Works</h3>
+        <p>You are not limited to a single item. Within your storage quota,
+           you can register an entire portfolio — photos, music, writing, code,
+           designs — all under one transaction.</p>
+      </div>
+    </div>
+
+    <!-- Legal reassurance note -->
+    <div class="legal-note">
+      <strong>🏛️ A note on legal recognition</strong>
+      Multiple states and international courts accept blockchain records as probative evidence
+      of prior creation and ownership. The EU's eIDAS framework, along with legislation in
+      Switzerland, France, Malta, Liechtenstein, and others, provides a legal basis for
+      blockchain timestamps in intellectual property disputes. While blockchain registration
+      complements — rather than replaces — traditional copyright (which arises automatically
+      on creation in most countries), it gives you the strongest possible timestamped proof
+      the moment you publish or register your work.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — COMPARISON TABLE
+════════════════════════════════════════════════════════════ -->
+<section class="section" style="background: var(--white); padding-top: 0;">
+  <div class="section-inner">
+    <div class="section-label">Side-by-Side Comparison</div>
+    <h2 class="section-title">Blockchain vs. Traditional IP Registration</h2>
+    <p class="section-sub">See exactly how IP Protect stacks up against national IP offices like INPI (France), EPO, WIPO, SwissReg, or USPTO.</p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:32%">Criterion</th>
+            <th class="col-head-blockchain">🔐 IP Protect (Blockchain)</th>
+            <th>🏛️ Traditional Registry<br><small style="font-weight:400; color:rgba(255,255,255,.7)">(INPI, WIPO, SwissReg…)</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Geographic Coverage</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Worldwide</span><br><small style="color:var(--muted);font-size:12px">No borders — valid globally</small></td>
+            <td class="col-trad"><span class="badge-no">✖ Territorial</span><br><small style="color:var(--muted);font-size:12px">Only the country/region of filing</small></td>
+          </tr>
+          <tr>
+            <td><strong>Registration Time</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Minutes</span></td>
+            <td class="col-trad"><span class="badge-no">✖ Months to years</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cost</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ From €15</span><br><small style="color:var(--muted);font-size:12px">One-time, no hidden fees</small></td>
+            <td class="col-trad"><span class="badge-no">✖ €200 – €5,000+</span><br><small style="color:var(--muted);font-size:12px">+ attorney fees + renewal fees</small></td>
+          </tr>
+          <tr>
+            <td><strong>Renewal Required</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Never</span><br><small style="color:var(--muted);font-size:12px">Permanent, once registered</small></td>
+            <td class="col-trad"><span class="badge-no">✖ Every 10 years</span><br><small style="color:var(--muted);font-size:12px">Fees required to stay active</small></td>
+          </tr>
+          <tr>
+            <td><strong>Tamper Resistance</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Immutable</span><br><small style="color:var(--muted);font-size:12px">Cryptographically locked forever</small></td>
+            <td class="col-trad"><span class="badge-warn">~ Physical/Digital records</span><br><small style="color:var(--muted);font-size:12px">Databases can be updated or lost</small></td>
+          </tr>
+          <tr>
+            <td><strong>Works You Can Register</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Any digital work</span><br><small style="color:var(--muted);font-size:12px">Art, music, writing, code, designs…</small></td>
+            <td class="col-trad"><span class="badge-warn">~ Specific categories</span><br><small style="color:var(--muted);font-size:12px">Different offices cover different IP types</small></td>
+          </tr>
+          <tr>
+            <td><strong>Legal Timestamp</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Immediate &amp; cryptographic</span></td>
+            <td class="col-trad"><span class="badge-warn">~ Official file date</span><br><small style="color:var(--muted);font-size:12px">Depends on processing delays</small></td>
+          </tr>
+          <tr>
+            <td><strong>Court Admissibility</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Accepted in EU &amp; many jurisdictions</span></td>
+            <td class="col-trad"><span class="badge-yes">✔ Well established</span></td>
+          </tr>
+          <tr>
+            <td><strong>Complexity</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Self-service, 3 steps</span></td>
+            <td class="col-trad"><span class="badge-no">✖ Complex, often needs a lawyer</span></td>
+          </tr>
+          <tr>
+            <td><strong>Multi-work Registration</strong></td>
+            <td class="col-blockchain"><span class="badge-yes">✔ Yes — up to your storage limit</span></td>
+            <td class="col-trad"><span class="badge-no">✖ Separate application per work</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — PRICING
+════════════════════════════════════════════════════════════ -->
+<section class="section pricing-section">
+  <div class="section-inner">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, one-time pricing</h2>
+    <p class="section-sub">
+      Pay once. Protect forever. No subscriptions, no renewal fees, no surprises.
+      Choose the storage that fits your creative portfolio.
+    </p>
+
+    <div class="pricing-grid">
+
+      <!-- STARTER -->
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-tagline">Perfect for individual creators with a single project or small collection.</div>
+        <div class="plan-price">
+          <span class="currency">€</span>
+          <span class="amount">15</span>
+        </div>
+        <div class="plan-price-note">✔ One-time payment — valid for life</div>
+        <div class="plan-storage">
+          <span class="plan-storage-icon">💾</span>
+          <div>
+            <strong>100 MB storage</strong>
+            <span>Register one or multiple works</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✔</span> Blockchain timestamp &amp; certificate</li>
+          <li><span class="check">✔</span> Worldwide coverage, no borders</li>
+          <li><span class="check">✔</span> Lifetime validity — no renewal</li>
+          <li><span class="check">✔</span> Supports all digital file types</li>
+          <li><span class="check">✔</span> Multiple works up to 100 MB total</li>
+          <li><span class="check">✔</span> Downloadable proof of registration</li>
+        </ul>
+        <a href="#register" class="btn btn-outline">Get Started</a>
+      </div>
+
+      <!-- CREATOR — FEATURED -->
+      <div class="plan-card featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Creator</div>
+        <div class="plan-tagline">Ideal for active creators with a growing body of work across multiple projects.</div>
+        <div class="plan-price">
+          <span class="currency">€</span>
+          <span class="amount">30</span>
+        </div>
+        <div class="plan-price-note">✔ One-time payment — valid for life</div>
+        <div class="plan-storage">
+          <span class="plan-storage-icon">💾</span>
+          <div>
+            <strong>500 MB storage</strong>
+            <span>Register one or multiple works</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✔</span> Everything in Starter</li>
+          <li><span class="check">✔</span> 5× more storage capacity</li>
+          <li><span class="check">✔</span> Multiple works up to 500 MB total</li>
+          <li><span class="check">✔</span> Blockchain timestamp &amp; certificate</li>
+          <li><span class="check">✔</span> Worldwide coverage, no borders</li>
+          <li><span class="check">✔</span> Priority confirmation</li>
+        </ul>
+        <a href="#register" class="btn btn-primary">Get Started</a>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="plan-card">
+        <div class="plan-name">Professional</div>
+        <div class="plan-tagline">For studios, agencies, and prolific creators protecting a large portfolio.</div>
+        <div class="plan-price">
+          <span class="currency">€</span>
+          <span class="amount">50</span>
+        </div>
+        <div class="plan-price-note">✔ One-time payment — valid for life</div>
+        <div class="plan-storage">
+          <span class="plan-storage-icon">💾</span>
+          <div>
+            <strong>1 GB storage</strong>
+            <span>Register one or multiple works</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✔</span> Everything in Creator</li>
+          <li><span class="check">✔</span> 10× Starter storage capacity</li>
+          <li><span class="check">✔</span> Multiple works up to 1 GB total</li>
+          <li><span class="check">✔</span> Blockchain timestamp &amp; certificate</li>
+          <li><span class="check">✔</span> Worldwide coverage, no borders</li>
+          <li><span class="check">✔</span> Priority confirmation</li>
+        </ul>
+        <a href="#register" class="btn btn-outline">Get Started</a>
+      </div>
+
+    </div>
+
+    <!-- Storage clarification note -->
+    <p style="margin-top:28px; font-size:13px; color:var(--muted); text-align:center;">
+      💡 <strong>Storage explained:</strong> Within your chosen plan, you can register
+      <em>one or several works</em> as long as their combined file size does not exceed
+      your storage limit (100 MB, 500 MB, or 1 GB).
+      Each plan comes with a single, permanent blockchain transaction covering all registered works.
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — HOW IT WORKS
+════════════════════════════════════════════════════════════ -->
+<section class="section how-section">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three steps to lifetime protection</h2>
+    <p class="section-sub">Register your work in minutes — no legal expertise required.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Upload Your Work</h3>
+        <p>Upload your file(s) — image, audio, video, text, or any digital format — up to your plan's storage limit.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Blockchain Registration</h3>
+        <p>Divenci creates a cryptographic fingerprint (hash) of your file and writes it to the blockchain, creating an immutable, timestamped record.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Download Your Certificate</h3>
+        <p>Receive your official IP Protect certificate with the blockchain transaction ID, timestamp, and proof of ownership — usable in any dispute worldwide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — FAQ
+════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub" style="margin-bottom:32px;">Everything you need to know before registering.</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h4>Is blockchain registration legally valid?</h4>
+        <p>Yes. In the European Union, the eIDAS Regulation (2014/910/EU) recognises
+           the legal effect of electronic timestamps. Several member states (France, Switzerland, Malta, Liechtenstein)
+           and courts worldwide have accepted blockchain records as admissible evidence of prior creation and ownership.
+           IP Protect gives you a court-ready proof of your work's existence at a precise moment in time.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Does blockchain registration replace a traditional patent or trademark?</h4>
+        <p>No — and we don't claim it does. Blockchain registration is a powerful complement to traditional IP rights.
+           It establishes proof of <em>when</em> you created your work, which is critical in copyright disputes.
+           Patents and trademarks are separate legal instruments that confer specific exclusive rights;
+           those still require official registration with the relevant authority.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I register multiple works in one plan?</h4>
+        <p>Yes. Within your storage allowance (100 MB, 500 MB, or 1 GB),
+           you can register as many individual works as you like.
+           The combined file size of all your works must simply stay within your plan's limit.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What types of files can I register?</h4>
+        <p>Any digital file — photographs, illustrations, music, audio recordings, videos, manuscripts,
+           source code, architectural drawings, 3D models, PDFs, and more.
+           If it is a digital file, IP Protect can register it.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is my file stored permanently on the blockchain?</h4>
+        <p>The blockchain stores a cryptographic hash (fingerprint) of your file — not the file itself.
+           This fingerprint is a unique mathematical representation that proves the file existed at that exact moment.
+           Your original file is securely stored on Divenci's servers for the lifetime of your registration.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What if I need more storage after purchasing a plan?</h4>
+        <p>You can upgrade to a higher plan or purchase an additional registration at any time.
+           Each registration has its own blockchain transaction and storage allowance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER NOTE
+════════════════════════════════════════════════════════════ -->
+<div class="footer-note">
+  <p>
+    <strong>IP Protect</strong> is a service by <a href="https://www.divenci.com" target="_blank">Divenci</a>.
+    Blockchain registration provides timestamped proof of creation and complements existing copyright protections.
+    It does not constitute legal advice. For complex IP matters, please consult a qualified IP attorney.
+  </p>
+  <p style="margin-top:8px;">© 2026 Divenci. All rights reserved.</p>
+</div>
+
+</body>
+</html>
